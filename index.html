@@ -153,8 +153,9 @@
     </style>
 </head>
 <body class="flex items-center justify-center">
-    <audio controls autoplay loop>
-        <source src="phepmau.mp3" type="audio/mp3">
+    <!-- I've removed the 'controls' attribute from the audio tag to hide the player -->
+    <audio id="backgroundMusic" loop>
+        <source src="phepmau.mp3" type="audio/mp3" >
     </audio>
     <div id="scene1" class="scene active text-center p-4">
         <div id="confetti-container-1" class="absolute top-0 left-0 w-full h-full pointer-events-none"></div>
@@ -200,7 +201,7 @@
             noButtonResponses: [
                 "Oh no! Are you sure?",
                 "Really? Do you remember our memories?",
-                "Please... for me? 🥺",
+                "Please... for me? �",
                 "I know that:>",
 
             ],
@@ -290,6 +291,15 @@
         }
 
         function goToScene(sceneNumber) {
+            // --- AUDIO FIX START ---
+            // Most browsers block audio from playing automatically.
+            // This code starts the music when the user first interacts with the page (by clicking the first button).
+            const audio = document.getElementById('backgroundMusic');
+            if (audio.paused) {
+                audio.play().catch(e => console.error("Audio playback failed. This is expected if the user hasn't interacted with the page yet.", e));
+            }
+            // --- AUDIO FIX END ---
+
             const currentSceneEl = document.getElementById(`scene${currentScene}`);
             currentSceneEl.style.animation = 'fadeOut 0.5s ease-in-out forwards';
             
